@@ -38,4 +38,4 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: "Test"
-      run: dotnet stryker -tp $(ls tests/**/*.Tests.csproj) --reporter cleartext --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }}
+      run: dotnet stryker -tp tests/Demo.Tests.csproj --reporter cleartext --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }}
