@@ -4,8 +4,7 @@ name: 'Tests'
 on:
   workflow_dispatch: # To can dispatch manually
 
-  pull_request:
-    types: [opened, reopened, edited, synchronize]
+  push:
     branches:
       - main
 
