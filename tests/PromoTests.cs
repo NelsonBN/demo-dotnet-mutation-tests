@@ -6,7 +6,7 @@ namespace Demo.Tests
     public class PromoTests
     {
         [Fact]
-        public void Age19_Sum_Nine()
+        public void Age19_Apply_True()
         {
             // Arrange
             var promo = new Promo(19);
@@ -21,14 +21,14 @@ namespace Demo.Tests
         }
 
         [Fact]
-        public void Age18_Sum_Nine()
+        public void Age68_IsSenior_True()
         {
             // Arrange
-            var promo = new Promo(19);
+            var promo = new Promo(68);
 
 
             // Act
-            var act = promo.Apply();
+            var act = promo.IsSenior();
 
 
             // Assert
