@@ -1,17 +1,21 @@
-name: 'Tests'
+name: 'Mutation tests'
 
 
 on:
   workflow_dispatch: # To can dispatch manually
 
-  push:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
     branches:
       - main
 
 
 env:
   SDK_VERSION: '6.0.401'
-  TEST_VERSION: '${GITHUB_REF#refs/heads/}-${{ github.run_number }}'
+
+  GIT_ORGANIZATION: 'NelsonBN'
+  PROJECT_NAME: 'demo-dotnet-mutation-tests'
+  TEST_PROJECT_PATH: 'tests/Demo.Tests.csproj'
 
 
 jobs:
@@ -21,6 +25,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: "Test version"
+      run: echo "Test version ${{ env.TEST_VERSION }}"
+
     - name: "Checkout"
       uses: actions/checkout@v3
 
@@ -29,7 +36,7 @@ jobs:
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
 
-    - name: "Restore .Net Tools"
+    - name: "Restore .NET Tools"
       run: dotnet tool restore
 
     - name: "Restore dependencies"
@@ -39,10 +46,15 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: "Test for main version"
-      run: dotnet stryker -tp tests/Demo.Tests.csproj --reporter cleartext --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main
+      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} --reporter dots --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main
+
+    - name: "Get branch name"
+      id: branch-name
+      uses: tj-actions/branch-names@v6
 
     - name: "Test for PR"
-      run: dotnet stryker -tp tests/Demo.Tests.csproj --reporter cleartext --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version ${{ env.TEST_VERSION }}
+      if: github.event_name == 'pull_request'
+      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} --reporter dots --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version ${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }}
 
     - name: "Comment PR"
       uses: actions/github-script@0.3.0
@@ -50,12 +62,13 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
+          const { issue: { number: issue_number }, repo: { owner, repo } } = context;
           const message = `🚀 **Stryker report generated** 🚀
-            [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FNelsonBN%2Fdemo-dotnet-mutation-tests%2F${{ env.TEST_VERSION }})](https://dashboard.stryker-mutator.io/reports/github.com/NelsonBN/demo-dotnet-mutation-tests/${{ env.TEST_VERSION }})
-            to more details: https://dashboard.stryker-mutator.io/reports/github.com/NelsonBN/demo-dotnet-mutation-tests/${{ env.TEST_VERSION }})`;
-            github.issues.createComment({ 
-              issue_number, 
-              owner, 
-              repo, 
+            [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2F${{ env.GIT_ORGANIZATION }}%2F${{ env.PROJECT_NAME }}%2F${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }})](https://dashboard.stryker-mutator.io/reports/github.com/${{ env.GIT_ORGANIZATION }}/${{ env.PROJECT_NAME }}/${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }})
+            To more details: https://dashboard.stryker-mutator.io/reports/github.com/${{ env.GIT_ORGANIZATION }}/${{ env.PROJECT_NAME }}/${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }}`;
+            github.issues.createComment({
+              issue_number,
+              owner,
+              repo,
               body: message
             });
