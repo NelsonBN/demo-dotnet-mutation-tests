@@ -44,7 +44,7 @@ jobs:
     - name: "Test for main version"
       run: dotnet stryker -tp tests/Demo.Tests.csproj --reporter cleartext --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main
 
-    - name: Get branch name
+    - name: "Get branch name"
       id: branch-name
       uses: tj-actions/branch-names@v6
 
@@ -58,6 +58,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
+          const { issue: { number: issue_number }, repo: { owner, repo } } = context;
           const message = `🚀 **Stryker report generated** 🚀
             [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FNelsonBN%2Fdemo-dotnet-mutation-tests%2F${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }})](https://dashboard.stryker-mutator.io/reports/github.com/NelsonBN/demo-dotnet-mutation-tests/${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }})
             to more details: https://dashboard.stryker-mutator.io/reports/github.com/NelsonBN/demo-dotnet-mutation-tests/${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }})`;
