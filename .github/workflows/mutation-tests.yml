@@ -1,0 +1,42 @@
+name: 'Tests'
+
+
+on:
+  workflow_dispatch: # To can dispatch manually
+
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    branches:
+      - main
+
+
+env:
+  SDK_VERSION: '6.0.401'
+
+
+jobs:
+
+  test-project:
+    name: "Mutation tests"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v3
+
+    - name: "Setup .NET"
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: ${{ env.SDK_VERSION }}
+
+    - name: "Restore .Net Tools"
+      run: dotnet tool restore
+
+    - name: "Restore dependencies"
+      run: dotnet restore
+
+    - name: "Build"
+      run: dotnet build --configuration Release --no-restore
+
+    - name: "Test"
+      run: dotnet stryker -tp tests/**/*.Tests.csproj --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }}

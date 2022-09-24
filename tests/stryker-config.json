@@ -1,0 +1,15 @@
+{
+  "stryker-config": {
+    "reporters": [
+      "progress",
+      "html",
+      "json"
+    ],
+    "ignore-methods": [
+      "*Equals*",
+      "*GetHashCode*",
+      "*ToString*",
+      "*GetType*"
+    ]
+  }
+}
