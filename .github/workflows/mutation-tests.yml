@@ -51,6 +51,12 @@ jobs:
       id: branch-name
       uses: tj-actions/branch-names@v6
 
+    - name: "Display branch details"
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "Branch name is ${{ steps.branch-name.outputs.current_branch }}"
+        echo "Branch ref is ${{ steps.branch-name.outputs.base_ref_branch }}"
+
     - name: "Test for PR"
       if: github.event_name == 'pull_request'
       run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} --reporter progress --reporter dots --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --with-baseline:${{ steps.branch-name.outputs.base_ref_branch }} --version ${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }}
