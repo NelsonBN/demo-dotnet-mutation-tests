@@ -43,7 +43,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: "Test for main version"
-      if: {{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} --reporter progress --reporter dots --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main
 
     - name: "Get branch name"
