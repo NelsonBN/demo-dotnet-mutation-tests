@@ -4,15 +4,22 @@
   - [Stryker .NET](https://stryker-mutator.io/docs/stryker-net/introduction/)
   - [Stryker dashboard](https://dashboard.stryker-mutator.io/)
 
-## Install
+## Configure
 
 ### Global
+
+#### Install Stryker
 ```bash
 dotnet tool install -g dotnet-stryker
 ```
 
+#### Update Stryker
+```bash
+dotnet tool update -g dotnet-stryker
+```
 
-### In projecto
+
+### By projecto
 
 #### Configure manifest
 ```bash
@@ -24,6 +31,11 @@ dotnet new tool-manifest
 dotnet tool install dotnet-stryker
 ```
 
+#### Update Stryker
+```bash
+dotnet tool update dotnet-stryker
+```
+
 
 
 ## How can run?
@@ -32,7 +44,7 @@ dotnet tool install dotnet-stryker
 dotnet stryker -tp <path> --reporter <type> --dashboard-api-key <key> --open-report
 ```
 * `-tp <path>`: Test project
-* `--reporter <type>`: Type of reporter [ cleartext | progress | html | json | dashboard | all ]
+* `--reporter <type>`: Type of reporter [ cleartext | cleartexttree | progress | dots | html | json | dashboard | markdown ]
   * `ClearText`: Show report in console
   * `Progress`: Show the progress ins console
   * `html`: Generate a html report
@@ -62,6 +74,11 @@ dotnet stryker -tp tests/Demo.Tests.csproj --reporter cleartext --reporter progr
 dotnet stryker -tp tests/Demo.Tests.csproj --reporter json --reporter html
 ```
 
+***Generate dots and markdown***
+```bash
+dotnet stryker -tp tests/Demo.Tests.csproj --reporter dots --reporter markdown
+```
+
 
 
 ## CI/CD
@@ -71,5 +88,5 @@ dotnet stryker -tp tests/Demo.Tests.csproj --reporter json --reporter html
 ### E.g
 ```yml
 - name: "Test"
-  run: dotnet stryker -tp tests/**/*.Tests.csproj --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }}
+  run: dotnet stryker -tp tests/Demo.Tests.csproj --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }}
 ```
