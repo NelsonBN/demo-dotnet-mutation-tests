@@ -4,6 +4,13 @@ name: 'Mutation tests'
 on:
   workflow_dispatch: # To can dispatch manually
 
+  push: # First pipeline to run when deploy a new version
+    branches:
+      - main
+    paths:
+      - "src/**" # Only run when exists changes in source code
+      - "tests/**" # Only run when exists changes in tests code
+
   pull_request:
     types: [opened, reopened, edited, synchronize]
     branches:
