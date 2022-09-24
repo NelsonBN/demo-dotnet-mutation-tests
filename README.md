@@ -83,7 +83,7 @@ dotnet stryker -tp tests/Demo.Tests.csproj --reporter dots --reporter markdown
 
 ## CI/CD
 
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FNelsonBN%2Fdemo-dotnet-mutation-tests%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/NelsonBN/demo-dotnet-mutation-tests/main)
+[![Mutation tests](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FNelsonBN%2Fdemo-dotnet-mutation-tests%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/NelsonBN/demo-dotnet-mutation-tests/main)
 
 ### E.g
 ```yml
