@@ -11,6 +11,6 @@
             => Age >= 18;
 
         public bool IsSenior()
-            => Age <= 67;
+            => Age >= 67;
     }
 }
