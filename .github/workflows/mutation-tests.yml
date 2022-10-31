@@ -92,3 +92,4 @@ jobs:
     - name: "Publish report"
       run: |
         cat $(find ./StrykerOutput/* -name "*.md") > $GITHUB_STEP_SUMMARY
+
