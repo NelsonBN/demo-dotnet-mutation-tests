@@ -50,6 +50,7 @@ dotnet stryker -tp <path> --reporter <type> --dashboard-api-key <key> --open-rep
   * `html`: Generate a html report
   * `json`: Generate a json report
   * `dashboard`: Send report to cloud dashboard
+  * `markdown`: Generate a markdown report
 * `--dashboard-api-key`: Api key for dashboard
 * `--open-report` or `-o`: Open report in browser when is done
 
