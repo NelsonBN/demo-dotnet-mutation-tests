@@ -25,8 +25,8 @@ env:
 
   GIT_ORGANIZATION: 'NelsonBN'
   PROJECT_NAME: 'demo-dotnet-mutation-tests'
-  PROJECT_PATH: '$GITHUB_WORKSPACE/src/Demo.csproj'
-  TEST_PROJECT_PATH: '$GITHUB_WORKSPACE/tests/Demo.Tests.csproj'
+  PROJECT_PATH: $GITHUB_WORKSPACE . '/src/Demo.csproj'
+  TEST_PROJECT_PATH: $GITHUB_WORKSPACE . '/tests/Demo.Tests.csproj'
 
 
 jobs:
@@ -36,11 +36,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Show paths"
+    - name: "Show paths 1"
       run: |
         echo "1 >> " . $GITHUB_WORKSPACE
-        echo "1 >> " . $PROJECT_PATH
-        echo "1 >> " . $TEST_PROJECT_PATH
+        echo "2 >> " . $PROJECT_PATH
+        echo "3 >> " . $TEST_PROJECT_PATH
         pwd
         ls -la
 
@@ -71,6 +71,14 @@ jobs:
       if: github.event_name == 'pull_request'
       run: |
         echo "Branch name is ${{ steps.branch-name.outputs.current_branch }}"
+
+    - name: "Show paths 2"
+      run: |
+        echo "1 >> " . $GITHUB_WORKSPACE
+        echo "2 >> " . $PROJECT_PATH
+        echo "3 >> " . $TEST_PROJECT_PATH
+        pwd
+        ls -la
 
     - name: "Test for PR"
       if: github.event_name == 'pull_request'
