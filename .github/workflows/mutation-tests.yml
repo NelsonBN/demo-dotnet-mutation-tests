@@ -25,8 +25,8 @@ env:
 
   GIT_ORGANIZATION: 'NelsonBN'
   PROJECT_NAME: 'demo-dotnet-mutation-tests'
-  PROJECT_PATH: '${{ github.workspace }}\src\Demo.csproj'
-  TEST_PROJECT_PATH: '${{ github.workspace }}/tests/Demo.Tests.csproj'
+  PROJECT_PATH: 'Demo.csproj'
+  TEST_PROJECT_PATH: 'tests/Demo.Tests.csproj'
 
 
 jobs:
