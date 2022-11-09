@@ -36,8 +36,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v3
+    - name: "Show paths"
+      run: |
+        echo "1 >> " . $GITHUB_WORKSPACE
+        echo "1 >> " . $PROJECT_PATH
+        echo "1 >> " . $TEST_PROJECT_PATH
+        pwd
+        ls -la
 
     - name: "Setup .NET"
       uses: actions/setup-dotnet@v2
